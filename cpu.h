@@ -3,16 +3,13 @@
 
 #include "ram.h"
 
-#include <unordered_map>
-#include <map>
-#include <vector>
 #include <iterator>
-
+#include <iostream>
 
 class Cpu {   
 public:
     Cpu() { setCommands(); }
-    		void ReadFromRam(Ram&);
+    bool ReadFromRam(Ram&);
 private:
     void setCommands();
 private:
@@ -31,19 +28,18 @@ private:
 
 private:
     
-class Alu
-{
-public:
-	Alu() = default;
-	std::string addTwoBinary(const std::string&, const std::string&) const;
-	std::string subTwoBinary(const std::string&, const std::string&) const;
-	std::string divTwoBinary(const std::string&, const std::string&) const;
-	std::string mulTwoBinary(const std::string&, const std::string&) const;
-	std::string cmpTwoBinary(const std::string&, const std::string&) const;
-private:	
-	int toDecimal(const std::string&) const;
-	std::string toBinary(int) const;	
-};
+	class Alu {
+	public:
+		Alu() = default;
+		std::string addTwoBinary(const std::string&, const std::string&) const;
+		std::string subTwoBinary(const std::string&, const std::string&) const;
+		std::string divTwoBinary(const std::string&, const std::string&) const;
+		std::string mulTwoBinary(const std::string&, const std::string&) const;
+		std::string cmpTwoBinary(const std::string&, const std::string&) const;
+	private:	
+		int toDecimal(const std::string&) const;
+		std::string toBinary(int) const;	
+	}; // Alu
 
     std::map<std::string, std::vector<std::string>>::iterator stackPointer;
     std::unordered_map<std::string,void(Cpu::*)(const std::vector<std::string>&)> commands;
@@ -52,14 +48,16 @@ private:
     
     class Register {
     public:
-	std::string getData() const {return _data;}
-	void setData(std::string data) {_data = data;}
+	std::string getData() const { return data; }
+	void setData(const std::string& data) {
+		this->data = data;
+	}
     private:
-	std::string _data;	
-    };
+	std::string data;	
+    }; // Register
 
 	Alu alu;
     	std::unordered_map<std::string, Register> registers;    
-};
+}; // Cpu
 
 #endif // _CPU_H
