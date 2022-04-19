@@ -1,29 +1,28 @@
 #include "ram.h"
 #include "cpu.h"
-
 #include <iostream>
 #include <iterator>
 
 void Cpu::setCommands() {
-		commands.emplace("1111", &Cpu::move);
-		commands.emplace("1110", &Cpu::print);
-		commands.emplace("1010", &Cpu::addition);
-		commands.emplace("0101", &Cpu::subtraction);
-		commands.emplace("0011", &Cpu::division);
-		commands.emplace("01111", &Cpu::multiply);
-		commands.emplace("011111", &Cpu::compare);
+	commands.emplace("1111", &Cpu::move);
+	commands.emplace("1110", &Cpu::print);
+	commands.emplace("1010", &Cpu::addition);
+	commands.emplace("0101", &Cpu::subtraction);
+	commands.emplace("0011", &Cpu::division);
+	commands.emplace("01111", &Cpu::multiply);
+	commands.emplace("011111", &Cpu::compare);
 		
-		jumpCommands.emplace("00111", &Cpu::jumpLessEqual);		
-		jumpCommands.emplace("00110", &Cpu::jumpEqual);		
-		jumpCommands.emplace("00101", &Cpu::jumpGreat);		
-		jumpCommands.emplace("00001", &Cpu::jumpGreatEqual);		
-		jumpCommands.emplace("00100", &Cpu::jumpLess);		
+	jumpCommands.emplace("00111", &Cpu::jumpLessEqual);		
+	jumpCommands.emplace("00110", &Cpu::jumpEqual);		
+	jumpCommands.emplace("00101", &Cpu::jumpGreat);		
+	jumpCommands.emplace("00001", &Cpu::jumpGreatEqual);		
+	jumpCommands.emplace("00100", &Cpu::jumpLess);		
 
-		registers.emplace("0001", Register());
-		registers.emplace("0010", Register());
-		registers.emplace("0100", Register());
-		registers.emplace("1000", Register());
-		registers.emplace("1100", Register()); // register EFL for CMP;
+	registers.emplace("0001", Register());
+	registers.emplace("0010", Register());
+	registers.emplace("0100", Register());
+	registers.emplace("01000", Register());
+	registers.emplace("01100", Register()); // register EFL for CMP;
 }
 
 void Cpu::compare(const std::vector<std::string>& currentCommand) {
@@ -33,7 +32,7 @@ void Cpu::compare(const std::vector<std::string>& currentCommand) {
 	
 	auto dataPosition = registers.find(data);
 	if (dataPosition == registers.end()) {
-		comparedNumber2 = data;
+		comparedNumber2 = currentCommand[2];
 	}
 	else {
 		comparedNumber2 = (registers[currentCommand[2]]).getData();
@@ -42,7 +41,6 @@ void Cpu::compare(const std::vector<std::string>& currentCommand) {
 
 	const std::string cmpStatus = alu.cmpTwoBinary(comparedNumber1, comparedNumber2);
 	(registers["1100"]).setData(cmpStatus);
-	
 }
 
 std::string Cpu::Alu::cmpTwoBinary(const std::string& number1, const std::string& number2) const {
@@ -61,135 +59,107 @@ std::string Cpu::Alu::cmpTwoBinary(const std::string& number1, const std::string
 
 void Cpu::addition(const std::vector<std::string>& currentCommand) { 
 	auto dataPosition = registers.find(currentCommand[2]);
+	std::string number2{};
+
 	if (dataPosition == registers.end()) {	
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = currentCommand[2];		
-		
-		std::string binarySum = alu.addTwoBinary(number1, number2);	
-		registers[currentCommand[1]].setData(binarySum);		
-
+		number2 = currentCommand[2];		
 	} else {
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = registers[currentCommand[2]].getData();
-
-		std::string binarySum = alu.addTwoBinary(number1, number2);
-		registers[currentCommand[1]].setData(binarySum);
+		number2 = registers[currentCommand[2]].getData();
 	}
+		registers[currentCommand[1]].setData(alu.addTwoBinary(registers[currentCommand[1]].getData(), number2));
 }
 
 void Cpu::subtraction(const std::vector<std::string>& currentCommand) { 
 	auto dataPosition = registers.find(currentCommand[2]);
+	std::string number2{};
+
 	if (dataPosition == registers.end()) {	
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = currentCommand[2];		
-		
-		std::string binarySub = alu.subTwoBinary(number1, number2);	
-		registers[currentCommand[1]].setData(binarySub);		
-
+		number2 = currentCommand[2];		
 	} else {
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = registers[currentCommand[2]].getData();
-
-		std::string binarySub = alu.subTwoBinary(number1, number2);
-		registers[currentCommand[1]].setData(binarySub);
+		number2 = registers[currentCommand[2]].getData();
 	}
+		registers[currentCommand[1]].setData(alu.subTwoBinary(registers[currentCommand[1]].getData(), number2));
 }
 
-void Cpu::division(const std::vector<std::string>& currentCommand) { 
+void Cpu::division(const std::vector<std::string>& currentCommand) {  
 	auto dataPosition = registers.find(currentCommand[2]);
+	std::string number2{};
+
 	if (dataPosition == registers.end()) {	
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = currentCommand[2];		
-		
-		std::string binaryDiv = alu.divTwoBinary(number1, number2);	
-		registers[currentCommand[1]].setData(binaryDiv);		
-
+		number2 = currentCommand[2];		
 	} else {
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = registers[currentCommand[2]].getData();
-
-		std::string binaryDiv = alu.divTwoBinary(number1, number2);
-		registers[currentCommand[1]].setData(binaryDiv);
+		number2 = registers[currentCommand[2]].getData();
 	}
+		registers[currentCommand[1]].setData(alu.divTwoBinary(registers[currentCommand[1]].getData(), number2));
 }
 
 void Cpu::multiply(const std::vector<std::string>& currentCommand) { 
 	auto dataPosition = registers.find(currentCommand[2]);
+	std::string number2{};
+
 	if (dataPosition == registers.end()) {	
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = currentCommand[2];		
-		
-		std::string binaryMul = alu.mulTwoBinary(number1, number2);	
-		registers[currentCommand[1]].setData(binaryMul);		
-
+		number2 = currentCommand[2];		
 	} else {
-		std::string number1 = (registers[currentCommand[1]].getData());
-		std::string number2 = registers[currentCommand[2]].getData();
-
-		std::string binaryMul = alu.mulTwoBinary(number1, number2);
-		registers[currentCommand[1]].setData(binaryMul);
+		number2 = registers[currentCommand[2]].getData();
 	}
-
+		registers[currentCommand[1]].setData(alu.mulTwoBinary(registers[currentCommand[1]].getData(), number2));
 }
 
 std::string Cpu::Alu::toBinary(int decimalNum) const {
 	std::string binaryNum;
-	for (; decimalNum != 0; decimalNum /=2) {
-		if(decimalNum%2 == 0) binaryNum = "0" + binaryNum;
-		else binaryNum = "1" + binaryNum;
+	bool negative{};
+	if (decimalNum < 0) {
+		negative = true;
+	}
+
+	for (; decimalNum != 0; decimalNum /= 2) {
+		if (decimalNum%2 == 0) {
+			binaryNum = "0" + binaryNum;
+		} else {
+			binaryNum = "1" + binaryNum; 
+		}
+	}
+	if (negative) {
+		binaryNum = "1" + binaryNum;
+	} else {
+		binaryNum = "0" + binaryNum; 
 	}
 	return binaryNum;
 }
 
 int Cpu::Alu::toDecimal(const std::string& binaryNum) const {
 	int decimalNum{1};
-	for (int i = 1; i < binaryNum.size(); ++i) {
+	for (int i = 2; i < binaryNum.size(); ++i) {
 		if (binaryNum[i] == '1') { 
 			++(decimalNum *= 2);	
 		} else {
 			decimalNum *= 2;
 		}
   	 }
+	if (binaryNum[0] == '1') {
+		decimalNum = decimalNum - 2 * decimalNum;
+	}
 	return decimalNum;
 }
 
 std::string Cpu::Alu::addTwoBinary(const std::string& number1,const std::string& number2) const {
-	int decimalNumber1 = toDecimal(number1);
-	int decimalNumber2 = toDecimal(number2);
-
-	int decimalSummary = decimalNumber1 + decimalNumber2;
-	std::string binarySummary = toBinary(decimalSummary);
-	return binarySummary;
+	return toBinary(toDecimal(number1) + toDecimal(number2));
 }
 
 std::string Cpu::Alu::subTwoBinary(const std::string& number1,const std::string& number2) const {
-	int decimalNumber1 = toDecimal(number1);
-	int decimalNumber2 = toDecimal(number2);
-
-	int decimalSubtraction = decimalNumber1 - decimalNumber2;
-	std::string binarySubtraction = toBinary(decimalSubtraction);
-	return binarySubtraction;
+	return toBinary(toDecimal(number1) - toDecimal(number2));
 }
 
 std::string Cpu::Alu::divTwoBinary(const std::string& number1,const std::string& number2) const {
-	int decimalNumber1 = toDecimal(number1);
-	int decimalNumber2 = toDecimal(number2);
-
-	int decimalSubtraction = decimalNumber1 / decimalNumber2;
-	std::string binarySubtraction = toBinary(decimalSubtraction);
-	return binarySubtraction;
+	return toBinary(toDecimal(number1) / toDecimal(number2));
 }
 
 std::string Cpu::Alu::mulTwoBinary(const std::string& number1,const std::string& number2) const {
-	int decimalNumber1 = toDecimal(number1);
-	int decimalNumber2 = toDecimal(number2);
-
-	int decimalSubtraction = decimalNumber1 * decimalNumber2;
-	std::string binarySubtraction = toBinary(decimalSubtraction);
-	return binarySubtraction;
+	return toBinary(toDecimal(number1) * toDecimal(number2));
 }
 
 void Cpu::jumpLessEqual(const std::vector<std::string>& currentCommand, Ram& ram) {
+	
 	std::string data = (registers["1100"]).getData();
 	if(data != "JL" && data != "JE") return;
 	
@@ -230,24 +200,24 @@ void Cpu::jumpEqual(const std::vector<std::string>& currentCommand, Ram& ram) {
 }
 
 void Cpu::move(const std::vector<std::string>& currentCommand) {
-	std::string data = currentCommand[2];
-	auto dataPosition = registers.find(data);
+	auto dataPosition = registers.find(currentCommand[2]);
 	if (dataPosition == registers.end()) {	
-		registers[currentCommand[1]].setData(data);
-	} else
+		registers[currentCommand[1]].setData(currentCommand[2]);
+	} else {
 		registers[currentCommand[1]].setData(registers[currentCommand[2]].getData());
+	}
 }
 
 void Cpu::print(const std::vector<std::string>& currentCommand) {
-	std::string data = currentCommand[1];
-	auto dataPosition = registers.find(data);
+	auto dataPosition = registers.find(currentCommand[1]);
 	if (dataPosition == registers.end()) {	
 		std::cout << currentCommand[1];
-	} else
-		std::cout << " " << registers[currentCommand[1]].getData();
+	} else {
+		std::cout << " " << registers[currentCommand[1]].getData() << '\n';
+	}		
 } 
 
-void Cpu::ReadFromRam(Ram& ram) {
+bool Cpu::ReadFromRam(Ram& ram) {
     using fptr = void(Cpu::*)(const std::vector<std::string>&);	
     using fptr2 = void(Cpu::*)(const std::vector<std::string>&, Ram&);
     
@@ -255,22 +225,30 @@ void Cpu::ReadFromRam(Ram& ram) {
  
     for (; stackPointer != ram.memory.end(); ++stackPointer) {
      	std::string commandName = (*stackPointer).second[0];
-	
 	auto checkJumpCommand = jumpCommands.find(commandName);
 	if (checkJumpCommand != jumpCommands.end()) {
 		fptr2 function = jumpCommands[commandName];
 		(this->*function)((*stackPointer).second, ram);	
-		continue;	
+		continue;
 	}
 	auto checkCommand = commands.find(commandName);
 	if (checkCommand != commands.end()) {	
-	fptr function = commands[commandName];
-	(this->*function)((*stackPointer).second);
-	continue;
+		fptr function = commands[commandName];
+		(this->*function)((*stackPointer).second);
+		continue;
 	}
-	std::string label = (*(stackPointer)).second[0];
-	label.pop_back();
-	labels.emplace(label, stackPointer->first);
+	else if(checkCommand == commands.end() && (*stackPointer).second[0][(*stackPointer).second[0].size()-1] == ':') {
+		std::string label = (*(stackPointer)).second[0];
+		label.pop_back();
+		labels.emplace(label, stackPointer->first);
+		continue;
+	}
+	else if(commandName == "0") continue;
+	else {
+		std::cout << commandName << " ";
+		return false;
+	}
+	
     }
+	return true;
 }
-
