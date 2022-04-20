@@ -128,6 +128,7 @@ std::string Cpu::Alu::toBinary(int decimalNum) const {
 }
 
 int Cpu::Alu::toDecimal(const std::string& binaryNum) const {
+	if (binaryNum == "0") { return 0; }
 	int decimalNum{1};
 	for (int i = 2; i < binaryNum.size(); ++i) {
 		if (binaryNum[i] == '1') { 
