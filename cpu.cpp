@@ -4,25 +4,25 @@
 #include <iterator>
 
 void Cpu::setCommands() {
-	commands.emplace("1111", &Cpu::move);
-	commands.emplace("1110", &Cpu::print);
-	commands.emplace("1010", &Cpu::addition);
-	commands.emplace("0101", &Cpu::subtraction);
-	commands.emplace("0011", &Cpu::division);
-	commands.emplace("01111", &Cpu::multiply);
-	commands.emplace("011111", &Cpu::compare);
+	commands.emplace("0000001", &Cpu::move);
+	commands.emplace("0000010", &Cpu::print);
+	commands.emplace("0000100", &Cpu::addition);
+	commands.emplace("0001000", &Cpu::subtraction);
+	commands.emplace("0010000", &Cpu::division);
+	commands.emplace("0001100", &Cpu::multiply);
+	commands.emplace("0010100", &Cpu::compare);
 		
-	jumpCommands.emplace("00111", &Cpu::jumpLessEqual);		
-	jumpCommands.emplace("00110", &Cpu::jumpEqual);		
-	jumpCommands.emplace("00101", &Cpu::jumpGreat);		
-	jumpCommands.emplace("00001", &Cpu::jumpGreatEqual);		
-	jumpCommands.emplace("00100", &Cpu::jumpLess);		
+	jumpCommands.emplace("000111", &Cpu::jumpLessEqual);		
+	jumpCommands.emplace("000110", &Cpu::jumpEqual);		
+	jumpCommands.emplace("000101", &Cpu::jumpGreat);		
+	jumpCommands.emplace("000001", &Cpu::jumpGreatEqual);		
+	jumpCommands.emplace("000100", &Cpu::jumpLess);		
 
-	registers.emplace("0001", Register());
-	registers.emplace("0010", Register());
-	registers.emplace("0100", Register());
-	registers.emplace("01000", Register());
-	registers.emplace("01100", Register()); // register EFL for CMP;
+	registers.emplace("00001", Register());
+	registers.emplace("00010", Register());
+	registers.emplace("00100", Register());
+	registers.emplace("00110", Register());
+	registers.emplace("1100", Register()); // register EFL for CMP;
 }
 
 void Cpu::compare(const std::vector<std::string>& currentCommand) {
