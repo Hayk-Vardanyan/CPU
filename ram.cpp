@@ -68,23 +68,23 @@ bool Ram::checkNumber(std::string& number) {
 }
 
 void Ram::setAssemblyAndBinaryCommands() {
-    assemblyAndBinaryCommands.emplace("move", "1111");
-    assemblyAndBinaryCommands.emplace("print", "1110");
-    assemblyAndBinaryCommands.emplace("add", "1010");
-    assemblyAndBinaryCommands.emplace("sub", "0101");
-    assemblyAndBinaryCommands.emplace("div", "0011");
-    assemblyAndBinaryCommands.emplace("mul", "01111");
-    assemblyAndBinaryCommands.emplace("cmp", "011111");
-    assemblyAndBinaryCommands.emplace("jg", "00101");
-    assemblyAndBinaryCommands.emplace("jge", "00001");
-    assemblyAndBinaryCommands.emplace("jl", "00100");
-    assemblyAndBinaryCommands.emplace("jle", "00111");
-    assemblyAndBinaryCommands.emplace("je", "00110");
+    assemblyAndBinaryCommands.emplace("move", "0000001");
+    assemblyAndBinaryCommands.emplace("print", "0000010");
+    assemblyAndBinaryCommands.emplace("add", "0000100");
+    assemblyAndBinaryCommands.emplace("sub", "0001000");
+    assemblyAndBinaryCommands.emplace("div", "0010000");
+    assemblyAndBinaryCommands.emplace("mul", "0001100");
+    assemblyAndBinaryCommands.emplace("cmp", "0010100");
+    assemblyAndBinaryCommands.emplace("jg", "000101");
+    assemblyAndBinaryCommands.emplace("jge", "000001");
+    assemblyAndBinaryCommands.emplace("jl", "000100");
+    assemblyAndBinaryCommands.emplace("jle", "000111");
+    assemblyAndBinaryCommands.emplace("je", "000110");
     
-    assemblyAndBinaryCommands.emplace("eax", "0001");
-    assemblyAndBinaryCommands.emplace("ebx", "0010");
-    assemblyAndBinaryCommands.emplace("ecx", "0100");
-    assemblyAndBinaryCommands.emplace("edx", "1000");
+    assemblyAndBinaryCommands.emplace("eax", "00001");
+    assemblyAndBinaryCommands.emplace("ebx", "00010");
+    assemblyAndBinaryCommands.emplace("ecx", "00100");
+    assemblyAndBinaryCommands.emplace("edx", "00110");
 }
 
 Ram::Ram()
