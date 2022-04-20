@@ -27,7 +27,6 @@ private:
     void jumpEqual(const std::vector<std::string>& currentCommand, Ram&);
 
 private:
-    
 	class Alu {
 	public:
 		Alu() = default;
