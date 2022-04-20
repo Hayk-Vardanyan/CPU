@@ -9,7 +9,6 @@ bool Ram::generateBinaryCode() {
     setAssemblyAndBinaryCommands();	
     std::vector<std::string> labels;
     for (auto it = memory.begin(); it != memory.end(); ++it) {
-
 	for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) {
 		auto checkCommand = assemblyAndBinaryCommands.find(*it2);
 		auto iter = std::find(labels.begin(), labels.end(), *it2);
@@ -115,7 +114,6 @@ bool Ram::fillMemory(const std::string& fileName) {
 		index += 1;
 		currentCommands.clear();
 	}   
-	memory.erase(--memory.end());
 	read.close();    
 	
 	if (fileName.substr(fileName.size() - 3) == "asm") {
