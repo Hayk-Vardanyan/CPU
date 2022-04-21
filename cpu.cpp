@@ -113,7 +113,7 @@ std::string Cpu::Alu::toBinary(int decimalNum) const {
 	}
 
 	for (; decimalNum != 0; decimalNum /= 2) {
-		if (decimalNum%2 == 0) {
+		if (decimalNum % 2 == 0) {
 			binaryNum = "0" + binaryNum;
 		} else {
 			binaryNum = "1" + binaryNum; 
