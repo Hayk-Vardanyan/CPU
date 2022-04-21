@@ -15,11 +15,11 @@ bool Ram::generateBinaryCode() {
 		if (checkCommand != assemblyAndBinaryCommands.end()) {
 		*it2 = assemblyAndBinaryCommands[*it2];
 			}
-		else if(checkCommand == assemblyAndBinaryCommands.end() && (*it2)[(*it2).size()-1] != ':' && iter == labels.end() 
+		else if (checkCommand == assemblyAndBinaryCommands.end() && (*it2)[(*it2).size()-1] != ':' && iter == labels.end() 
 			       	&& !checkNumber(*it2)) { 
 				return false;
 			}
-		else if( (*it2)[(*it2).size()-1] == ':') {
+		else if ((*it2)[(*it2).size()-1] == ':') {
 			labels.push_back((*it2).substr(0, (*it2).size()-1 ));
 			}			
 		}
