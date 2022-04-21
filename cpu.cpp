@@ -159,8 +159,7 @@ std::string Cpu::Alu::mulTwoBinary(const std::string& number1,const std::string&
 	return toBinary(toDecimal(number1) * toDecimal(number2));
 }
 
-void Cpu::jumpLessEqual(const std::vector<std::string>& currentCommand, Ram& ram) {
-	
+void Cpu::jumpLessEqual(const std::vector<std::string>& currentCommand, Ram& ram) {	
 	std::string data = (registers["1100"]).getData();
 	if(data != "JL" && data != "JE") return;
 	
