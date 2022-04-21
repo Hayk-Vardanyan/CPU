@@ -1,5 +1,6 @@
 #include "ram.h"
 #include "cpu.h"
+
 #include <iostream>
 #include <iterator>
 
@@ -22,7 +23,7 @@ void Cpu::setCommands() {
 	registers.emplace("00010", Register());
 	registers.emplace("00100", Register());
 	registers.emplace("00110", Register());
-	registers.emplace("1100", Register()); // register EFL for CMP;
+	registers.emplace("00011", Register()); // register EFL for CMP;
 }
 
 void Cpu::compare(const std::vector<std::string>& currentCommand) {
@@ -40,7 +41,7 @@ void Cpu::compare(const std::vector<std::string>& currentCommand) {
 	comparedNumber1 = (registers[currentCommand[1]]).getData();
 
 	const std::string cmpStatus = alu.cmpTwoBinary(comparedNumber1, comparedNumber2);
-	(registers["1100"]).setData(cmpStatus);
+	(registers["00011"]).setData(cmpStatus);
 }
 
 std::string Cpu::Alu::cmpTwoBinary(const std::string& number1, const std::string& number2) const {
@@ -129,6 +130,7 @@ std::string Cpu::Alu::toBinary(int decimalNum) const {
 
 int Cpu::Alu::toDecimal(const std::string& binaryNum) const {
 	if (binaryNum == "0") { return 0; }
+	
 	int decimalNum{1};
 	for (int i = 2; i < binaryNum.size(); ++i) {
 		if (binaryNum[i] == '1') { 
@@ -159,41 +161,41 @@ std::string Cpu::Alu::mulTwoBinary(const std::string& number1,const std::string&
 	return toBinary(toDecimal(number1) * toDecimal(number2));
 }
 
-void Cpu::jumpLessEqual(const std::vector<std::string>& currentCommand, Ram& ram) {	
-	std::string data = (registers["1100"]).getData();
-	if(data != "JL" && data != "JE") return;
+void Cpu::jumpLessEqual(const std::vector<std::string>& currentCommand, Ram& ram) {
+	std::string data = (registers["00011"]).getData();
+	if (data != "JL" && data != "JE") return;
 	
 	auto labelAddress = labels[currentCommand[1]];
 	stackPointer = ram.memory.find(labelAddress);
 }
 
 void Cpu::jumpLess(const std::vector<std::string>& currentCommand, Ram& ram) {
-	std::string data = (registers["1100"]).getData();
-	if(data != "JL") return;
+	std::string data = (registers["00011"]).getData();
+	if (data != "JL") return;
 	
 	auto labelAddress = labels[currentCommand[1]];
 	stackPointer = ram.memory.find(labelAddress);
 }
 
 void Cpu::jumpGreat(const std::vector<std::string>& currentCommand, Ram& ram) {
-	std::string data = (registers["1100"]).getData();
-	if(data != "JG") return;
+	std::string data = (registers["00011"]).getData();
+	if (data != "JG") return;
 	
 	auto labelAddress = labels[currentCommand[1]];
 	stackPointer = ram.memory.find(labelAddress);
 }
 
 void Cpu::jumpGreatEqual(const std::vector<std::string>& currentCommand, Ram& ram) {
-	std::string data = (registers["1100"]).getData();
-	if(data != "JG" && data != "JE") return;
+	std::string data = (registers["00011"]).getData();
+	if (data != "JG" && data != "JE") return;
 	
 	auto labelAddress = labels[currentCommand[1]];
 	stackPointer = ram.memory.find(labelAddress);
 }
 
 void Cpu::jumpEqual(const std::vector<std::string>& currentCommand, Ram& ram) {
-	std::string data = (registers["1100"]).getData();
-	if(data != "JE") return;
+	std::string data = (registers["00011"]).getData();
+	if (data != "JE") return;
 	
 	auto labelAddress = labels[currentCommand[1]];
 	stackPointer = ram.memory.find(labelAddress);
@@ -248,7 +250,6 @@ bool Cpu::ReadFromRam(Ram& ram) {
 		std::cout << commandName << " ";
 		return false;
 	}
-	
     }
 	return true;
 }
