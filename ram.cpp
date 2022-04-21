@@ -45,20 +45,20 @@ bool Ram::checkNumber(std::string& number) {
 		number = number.substr(1);
 	}
 	for (int i = 0; i < number.size(); ++i) {
-		if(!(number[i] >= '0' && number[i] <= '9')) {
+		if (!(number[i] >= '0' && number[i] <= '9')) {
 			return false;
 		}
 	}
 	int decimalNum = stoi(number);
 	number.clear();
 	for (; decimalNum != 0; decimalNum /= 2) {
-		if(decimalNum % 2 == 0) {
+		if (decimalNum % 2 == 0) {
 			number = "0" + number;
 		} else {
 			number = "1" + number; 
 		}
 	}
-	if(negative) {
+	if (negative) {
 		number = "1" + number;
 	} else {
 		number = "0" + number;
