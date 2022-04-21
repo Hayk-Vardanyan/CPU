@@ -1,4 +1,4 @@
-The program expects as input binary or assembly code, if file has .asm extensionit will compile it as assembly code and generate a binary code.
+The program expects as input binary or assembly code, if file has .asm extension it will be compiled as assembly code and then will be generated a binary code.
 Here are the assembly commands the program supports: move, print, add, mul, div,
 sub, cmp, je, jle, jl, jg, jge and the registers eax, ebx, ecx, edx.
 Here are the binary commands according to them:
