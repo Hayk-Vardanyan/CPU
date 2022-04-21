@@ -1,0 +1,22 @@
+The program expects as input binary or assembly code, if file has .asm extensionit will compile it as assembly code and generate a binary code.
+Here are the assembly commands the program supports: move, print, add, mul, div,
+sub, cmp, je, jle, jl, jg, jge and the registers eax, ebx, ecx, edx.
+Here are the binary commands according to them:
+move -> 0000001
+print -> 0000010
+add -> 0000100
+sub -> 0001000
+div -> 0010000
+mul -> 0001100
+cmp -> 0010100
+jg -> 000101
+jge -> 000001
+jl -> 000100
+jle -> 000111
+je -> 000110
+eax -> 00001
+ebx -> 00010
+ecx -> 00100
+edx ->00110
+
+Number will be accpeted as positive if it starts with 0 and negative if it starts with 1.
