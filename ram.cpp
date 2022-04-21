@@ -13,7 +13,7 @@ bool Ram::generateBinaryCode() {
 		auto checkCommand = assemblyAndBinaryCommands.find(*it2);
 		auto iter = std::find(labels.begin(), labels.end(), *it2);
 		if (checkCommand != assemblyAndBinaryCommands.end()) {
-		*it2 = assemblyAndBinaryCommands[*it2];
+			*it2 = assemblyAndBinaryCommands[*it2];
 			}
 		else if (checkCommand == assemblyAndBinaryCommands.end() && (*it2)[(*it2).size()-1] != ':' && iter == labels.end() 
 			       	&& !checkNumber(*it2)) { 
@@ -29,11 +29,11 @@ bool Ram::generateBinaryCode() {
 
 int Ram::stoi(std::string& str) { 
 	std::vector<int> vec;
-	for(int i = 0; i < str.size(); ++i) { 
+	for (int i = 0; i < str.size(); ++i) { 
 		vec.push_back(str[i] - 48); 
 		}
 	int res = 0;
-	for(int i = vec.size() - 1; i >= 0; --i ) { 
+	for (int i = vec.size() - 1; i >= 0; --i ) { 
 		res += vec[i] * pow(10, vec.size() - i - 1);
 		} 
 	return res;
